@@ -8,13 +8,12 @@ iris = load_iris()
 feature_set = [{iris.feature_names[i] : d[i] for i in range(len(d))} for d in iris.data]
 data = list(zip(feature_set, iris.target))
 
-kf = KFold(n_splits=3)
+num_splits = 10
+kf = KFold(n_splits=num_splits)
 sum = 0
 for train, test in kf.split(data):
     train_data = np.array(data)[train]
     test_data = np.array(data)[test]
     classifier = nltk.NaiveBayesClassifier.train(train_data)
-    classifier.show_most_informative_features()
     sum += nltk.classify.accuracy(classifier, test_data)
-average = sum/3
-print(average*100)
+average = sum/num_splits
